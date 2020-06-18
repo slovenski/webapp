@@ -21,5 +21,13 @@ pipeline {
        }
     }
 
+    stage ('Deploy') {
+            steps {
+           sshagent(['tomcat']) {
+                sh 'scp -o StrictHostKeyChecking=no target/*.war root@10.148.0.88:/prod/apache-tomcat-8.5.56/webapps/webapp.war'
+              }      
+           }       
+    }
+
   }
 }
