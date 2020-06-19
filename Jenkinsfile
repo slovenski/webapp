@@ -39,7 +39,7 @@ pipeline {
         echo 'Upload Reports to DefectDojo'
         sh 'pip install requests'
         sh 'chmod +x upload-results.py'
-   			sh 'python upload-results.py --host 3.81.3.77:80 --api_key 1f564cd7b410b82868d90147eb4a0145ef975e0e --engagement_id 1 --result_file zap_report.xml --username admin --scanner "ZAP Scan"'
+   			sh 'python upload-results.py --host 10.148.0.89:8000 --api_key 1f564cd7b410b82868d90147eb4a0145ef975e0e --engagement_id 1 --result_file zap_report.xml --username admin --scanner "ZAP Scan"'
       }
     }
 
