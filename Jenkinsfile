@@ -15,6 +15,16 @@ pipeline {
       }
     }
 
+    stage ('SAST') {
+      steps {
+        withSonarQubeEnv('sonar') {
+          echo 'Doing Static application security testing process..'
+          sh 'mvn sonar:sonar'
+          sh 'cat target/sonar/report-task.txt'
+        }
+      }
+    }
+
     stage ('Build') {
       steps {
         echo 'Building..'
@@ -33,13 +43,17 @@ pipeline {
 
     stage ('DAST') {
       steps {
-        echo 'Running DAST with Zed Attack Proxy (ZAP)'
-        sh 'rm zap-report.xml || true'
-        sh 'docker run --user root -v $(pwd):/zap/wrk/:rw --rm -v -t owasp/zap2docker-stable zap-baseline.py -t http://10.148.0.88:8080/webapp/?name=test -g gen.conf -x zap_report.xml || true'
-        echo 'Upload Reports to DefectDojo'
-        sh 'pip install requests'
-        sh 'chmod +x upload-results.py'
-   			sh 'python upload-results.py --host 10.148.0.89:8000 --api_key 1f564cd7b410b82868d90147eb4a0145ef975e0e --engagement_id 1 --result_file zap_report.xml --username admin --scanner "ZAP Scan"'
+        echo 'Running DAST with Zed Attack Proxy..'
+        sh '''
+            rm zap-report.xml || true
+            docker run --user root -v $(pwd):/zap/wrk/:rw --rm -v -t owasp/zap2docker-stable zap-baseline.py -t http://10.148.0.88:8080/webapp/?name=test -g gen.conf -x zap_report.xml || true
+        '''
+        echo 'Upload Reports to DefectDojo..'
+        sh '''
+            pip install requests
+            chmod +x upload-results.py
+            python upload-results.py --host 10.148.0.89:8000 --api_key 1f564cd7b410b82868d90147eb4a0145ef975e0e --engagement_id 1 --result_file zap_report.xml --username admin --scanner "ZAP Scan"
+        '''
       }
     }
 
