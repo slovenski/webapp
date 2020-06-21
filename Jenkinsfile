@@ -23,7 +23,7 @@ pipeline {
         sh 'rm dependency-track.json || true'
         sh 'curl -X GET --header "Accept: application/json" --header "X-Api-Key: tKXwCHetVavKwe91IKuwUM11F4058NIy" "http://10.148.0.68:8888/api/v1/finding/project/e3669e87-d7ca-4b25-ab8f-7e108bda643f/export" -o dependency-track.json || true'
         echo 'Upload Reports to DefectDojo..'
-        sh 'python upload-results.py --host 10.148.0.68:8080 --api_key 9599ed3e73e6e266aa693a5892c2231b1ea522f4 --engagement_id 2 --result_file dependency-track.json --username admin --scanner "Dependency Track Finding Packaging Format (FPF) Export"'
+        sh 'python upload-results.py --host 10.148.0.68:8080 --api_key 9599ed3e73e6e266aa693a5892c2231b1ea522f4 --engagement_id 3 --result_file dependency-track.json --username admin --scanner "Dependency Track Finding Packaging Format (FPF) Export"'
       }
     }
 
