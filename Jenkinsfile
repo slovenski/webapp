@@ -19,9 +19,9 @@ pipeline {
       steps {
         sh 'rm target/bom.xml || true'
         sh 'mvn -Dmaven.test.skip=true org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom' 
-        sh 'python upload_bom.py --server 10.148.0.68:8888 --project b80f0244-cbdd-44e7-93d1-f635adb98ad0 --api_key tKXwCHetVavKwe91IKuwUM11F4058NIy --path target/bom.xml'      
+        sh 'python upload_bom.py --server 10.148.0.68:8888 --project 5656ebfb-7b8c-44f6-8a4d-55b1bdb04bd5 --api_key tKXwCHetVavKwe91IKuwUM11F4058NIy --path target/bom.xml'      
         sh 'rm dependency-track.json || true'
-        sh 'curl -X "GET" --header "Accept: application/json" "http://10.148.0.68:8888/api/v1/finding/project/953b7220-4c8d-49da-b2e6-deee140994d5/export" -o dependency-track.json'
+        sh 'curl -X GET --header "Accept: application/json" --header "X-Api-Key: tKXwCHetVavKwe91IKuwUM11F4058NIy" "http://10.148.0.68:8888/api/v1/finding/project/5656ebfb-7b8c-44f6-8a4d-55b1bdb04bd5/export" -o dependency-track.json'
         echo 'Upload Reports to DefectDojo..'
         sh 'python upload-results.py --host 10.148.0.68:8080 --api_key 9599ed3e73e6e266aa693a5892c2231b1ea522f4 --engagement_id 1 --result_file dependency-track.json --username admin --scanner "Dependency Track Finding Packaging Format (FPF) Export"'
       }
