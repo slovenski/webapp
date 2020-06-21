@@ -70,10 +70,6 @@ pipeline {
             rm zap-report.xml || true
             docker run --user root -v $(pwd):/zap/wrk/:rw --rm -v -t owasp/zap2docker-stable zap-baseline.py -t http://10.148.0.88:8080/webapp/?name=test -g gen.conf -x zap_report.xml || true
         '''
-      }
-    }
-    post {
-      success {
         echo 'Upload Reports to DefectDojo..'
         sh '''
             pip install requests
@@ -82,5 +78,6 @@ pipeline {
         '''
       }
     }
+    
   }
 }
