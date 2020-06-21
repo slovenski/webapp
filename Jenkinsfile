@@ -25,11 +25,7 @@ pipeline {
                 -H 'Content-Type: multipart/form-data; charset=utf-8; boundary=__X_CURL_BOUNDARY__' \
                 -F 'project=953b7220-4c8d-49da-b2e6-deee140994d5' \
                 -F 'bom=target/bom.xml'
-        '''       
-      }
-    }
-    post {
-      success {
+        '''      
         sh 'rm dependency-track.json || true'
         sh 'curl -X "GET" --header "Accept: application/json" "http://10.148.0.68:8888/api/v1/finding/project/953b7220-4c8d-49da-b2e6-deee140994d5/export" -o dependency-track.json'
         echo 'Upload Reports to DefectDojo..'
