@@ -19,13 +19,7 @@ pipeline {
       steps {
         sh 'rm target/bom.xml || true'
         sh 'mvn -Dmaven.test.skip=true org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom' 
-        sh '''
-           curl -X 'POST' 'http://10.148.0.68:8888/api/v1/bom' \
-                -H 'X-API-Key: tKXwCHetVavKwe91IKuwUM11F4058NIy' \
-                -H 'Content-Type: multipart/form-data; charset=utf-8; boundary=__X_CURL_BOUNDARY__' \
-                -F 'project=953b7220-4c8d-49da-b2e6-deee140994d5' \
-                -F 'bom=target/bom.xml'
-        '''      
+        sh 'python upload_bom.py --server 10.148.0.68:8888 --project b80f0244-cbdd-44e7-93d1-f635adb98ad0 --api_key tKXwCHetVavKwe91IKuwUM11F4058NIy --path target/bom.xml'      
         sh 'rm dependency-track.json || true'
         sh 'curl -X "GET" --header "Accept: application/json" "http://10.148.0.68:8888/api/v1/finding/project/953b7220-4c8d-49da-b2e6-deee140994d5/export" -o dependency-track.json'
         echo 'Upload Reports to DefectDojo..'
